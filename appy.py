@@ -1,28 +1,33 @@
 from flask import Flask, jsonify, request
+from dotenv import load_dotenv
+import os
 from flask_cors import CORS
-import requests
+
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+allowed_origins = os.getenv('ALLOWED_ORIGINS', '').split(',')
+
+# CORS for Rails frontend only
+CORS(app, origins=allowed_origins)
 
 PROJECTS = [
-  {"name": "my_portfolio", "html_url": "https://github.com/CeeFish/my_portfolio", "description": "Ruby on Rails, Python, and Bootstrap"},
+    {
+        "name": "my_portfolio",
+        "html_url": "https://github.com/CeeFish/my_portfolio",
+        "description": "Backend engineer blending creative design with secure architecture"
+    },
 ]
 
 @app.route('/projects')
 def get_projects():
-    DEFAULT_FEATURED = 'my_portfolio'
-
-    featured = request.args.get('featured', DEFAULT_FEATURED)
-    featured_lower = featured.lower()
-
+    default_featured = 'my_portfolio'
+    featured = request.args.get('featured', default_featured).lower()
     limit = request.args.get('limit', 1, type=int)
 
-    filtered = [
-        p for p in PROJECTS
-        if p['name'].lower() == featured_lower
-    ]
-
+    filtered = [p for p in PROJECTS if p['name'].lower() == featured]
     return jsonify(filtered[:limit]), 200
 
 
