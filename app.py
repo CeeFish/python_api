@@ -31,31 +31,6 @@ def get_projects():
     return jsonify(filtered[:limit]), 200
 
 
-# This is used when showing all public projects on the portfolio page
-    # GITHUB_USERNAME = "CeeFish"
-
-    # @app.route("/projects")
-    # def get_projects():
-    #     raw = requests.get(f"https://api.github.com/users/{GITHUB_USERNAME}/repos").json()
-    # @app.route("/projects")
-    # def get_projects():
-    #     url = f"https://api.github.com/users/{GITHUB_USERNAME}/repos"
-    #     response = requests.get(url)
-    #     repos = response.json()
-
-    #     projects = []
-    #     for repo in repos:
-    #         if not repo.get("fork"):  # Skip forks
-    #             projects.append({
-    #                 "name": repo["name"],
-    #                 "description": repo["description"] or "No description provided.",
-    #                 "language": repo["language"],
-    #                 "stars": repo["stargazers_count"],
-    #                 "updated_at": repo["updated_at"],
-    #                 "html_url": repo["html_url"]
-    #             })
-
-    #     return jsonify(projects)
 
 if __name__ == "__main__":
     app.run(debug=True)
